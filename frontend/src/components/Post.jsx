@@ -23,10 +23,10 @@ const Post = ({post}) => {
 
   const handleLike = async () => {
     try {
-      const result = await axios.get(`${serverUrl}/api/post/like/${post._id}`,{withCredentials:true})
+      const result = await axios.get(`${serverUrl}/api/post/like/${post?._id}`,{withCredentials:true})
       const updatedPost = result.data
       
-      const updatedPosts = postData.map(p=>p._id==post._id?updatedPost:p)
+      const updatedPosts = postData.map(p=>p._id==post?._id?updatedPost:p)
       dispatch(setPostData(updatedPosts))
     } catch (error) {
       console.log(error);
@@ -35,7 +35,7 @@ const Post = ({post}) => {
 
   const handleComment = async () => {
     try {
-      const result = await axios.post(`${serverUrl}/api/post/comment/${post._id}`,{message},{withCredentials:true})
+      const result = await axios.post(`${serverUrl}/api/post/comment/${post?._id}`,{message},{withCredentials:true})
       const updatedPost = result.data
       
       const updatedPosts = postData.map(p=>p._id==post._id?updatedPost:p)
@@ -57,12 +57,12 @@ const Post = ({post}) => {
 
   useEffect(()=>{
     socket?.on("likedPost",(updatedData)=>{
-      const updatedPosts = postData.map(p=>p._id==updatedData.postId?{...p,likes:updatedData.likes}:p)
+      const updatedPosts = postData.map(p=>p?._id==updatedData.postId?{...p,likes:updatedData.likes}:p)
       dispatch(setPostData(updatedPosts))
     })
 
     socket?.on("commentedPost",(updatedData)=>{
-      const updatedPosts = postData.map(p=>p._id==updatedData.postId?{...p,comments:updatedData.comments}:p)
+      const updatedPosts = postData.map(p=>p?._id==updatedData.postId?{...p,comments:updatedData.comments}:p)
       dispatch(setPostData(updatedPosts))
     })
 
@@ -78,9 +78,9 @@ const Post = ({post}) => {
             <div className='w-[40px] h-[40px] md:w-[60px] md:h-[60px] border-2 border-black rounded-full cursor-pointer overflow-hidden'>
             <img src={post.author?.profileImage || dp} alt="" className='w-full object-cover' />
             </div>
-            <div className='w-[150px] font-semibold truncate'>{post.author.userName}</div>
+            <div className='w-[150px] font-semibold truncate'>{post.author?.userName}</div>
           </div>
-          {userData._id!=post.author._id && <FollowButton tailwind={'px-[10px] min-w-[60px] md:min-w-[100px] py-[5px] h-[30px] md:h-[40px] bg-[black] text-white rounded-2xl text-[14px] md:text-[16px]'} targetUserId={post.author._id} />}
+          {userData._id!=post?.author?._id && <FollowButton tailwind={'px-[10px] min-w-[60px] md:min-w-[100px] py-[5px] h-[30px] md:h-[40px] bg-[black] text-white rounded-2xl text-[14px] md:text-[16px]'} targetUserId={post?.author?._id} />}
         </div>
 
         <div className="w-[90%] flex items-center justify-center ">
@@ -100,8 +100,8 @@ const Post = ({post}) => {
         <div className='w-full h-[60px] flex justify-between items-center px-[20px] mt-[10px]'>
           <div className='flex justify-center items-center gap-[10px]'>
             <div className='flex justify-center items-center gap-[5px]'>
-              {!post.likes.includes(userData._id) && <GoHeart className='w-[25px] cursor-pointer h-[25px]' onClick={handleLike} />}
-              {post.likes.includes(userData._id) && <GoHeartFill className='w-[25px] cursor-pointer h-[25px] text-red-600' onClick={handleLike} />}
+              {!post.likes.includes(userData?._id) && <GoHeart className='w-[25px] cursor-pointer h-[25px]' onClick={handleLike} />}
+              {post.likes.includes(userData?._id) && <GoHeartFill className='w-[25px] cursor-pointer h-[25px] text-red-600' onClick={handleLike} />}
               <span>{post.likes?.length}</span>
             </div>
             <div onClick={()=>setShowComment(prev=>!prev)} className='flex justify-center items-center gap-[5px]'>
@@ -117,8 +117,8 @@ const Post = ({post}) => {
 
         {post.caption &&
         <div className='w-full px-[20px] gap-[10px] flex justify-start items-center'>
-          <h1>{post.author.userName}</h1>
-          <div>{post.caption}</div>
+          <h1>{post?.author?.userName}</h1>
+          <div>{post?.caption}</div>
         </div>
         }
 
@@ -136,9 +136,9 @@ const Post = ({post}) => {
           {post.comments?.map((com,index)=>(
             <div key={index} className='w-full px-[20px] py-[20px] flex items-center gap-[20px] border-b-2 border-b-gray-200'>
               <div className='w-[40px] h-[40px] md:w-[60px] md:h-[60px] border-2 border-black rounded-full cursor-pointer overflow-hidden'>
-                <img src={com.author?.profileImage || dp} alt="" className='w-full object-cover' />
+                <img src={com?.author?.profileImage || dp} alt="" className='w-full object-cover' />
               </div>
-              <div>{com.message}</div>
+              <div>{com?.message}</div>
             </div>
           ))}
           </div>
