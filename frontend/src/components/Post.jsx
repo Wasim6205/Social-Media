@@ -129,7 +129,7 @@ const Post = ({post}) => {
               <img src={post.author?.profileImage || dp} alt="" className='w-full object-cover' />
             </div>
             <input value={message} onChange={(e)=>setMessage(e.target.value)} type="text" className='px-[10px] border-b-2 border-b-gray-500 w-[90%] outline-none h-[40px]' placeholder='Write comment...' />
-            <button onClick={handleComment} className='absolute right-[20px] cursor-pointer'><IoSend className='w-[25px] h-[25px]' /></button>
+            <button onClick={handleComment} disabled={!message} className='absolute right-[20px] cursor-pointer'><IoSend className='w-[25px] h-[25px]' /></button>
           </div>
 
           <div className='w-full max-h-[300px] overflow-auto'>
