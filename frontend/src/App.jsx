@@ -5,7 +5,7 @@ import SignIn from './pages/SignIn'
 import ForgotPassword from './pages/ForgotPassword'
 import Home from './pages/Home'
 import { useDispatch, useSelector } from 'react-redux'
-import GetCurrentUser from './hooks/getCurrentUser'
+import GetCurrentUser from './hooks/GetCurrentUser'
 import GetSuggestedUsers from './hooks/GetSuggestedUsers'
 import Profile from './pages/Profile'
 import EditProfile from './pages/EditProfile'
@@ -25,7 +25,8 @@ import Search from './pages/Search'
 import GetAllNotifications from './hooks/GetAllNotifications'
 import Notifications from './pages/Notifications'
 import { setNotificationData } from './redux/userSlice'
-export const serverUrl = "http://localhost:8000"
+// export const serverUrl = "http://localhost:8000"
+export const serverUrl = "https://social-media-instawave-backend.onrender.com"
 
 const App = () => {
   GetCurrentUser()
