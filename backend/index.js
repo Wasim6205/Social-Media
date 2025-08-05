@@ -31,6 +31,9 @@ app.use('/api/loop', loopRouter)
 app.use('/api/story', storyRouter)
 app.use('/api/message', messageRouter)
 
+app.get("/",(req,res)=>{
+    res.send("Hello World")
+})
 server.listen(port, ()=>{
     connectDb()
     console.log(`server started on port ${port}`)
