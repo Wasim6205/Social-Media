@@ -17,7 +17,7 @@ const port = process.env.PORT || 5000
 
 app.use(cors({
     // origin: "http://localhost:5173",
-    origin: "https://instawave.onrender.com",
+    origin:"https://instawave.onrender.com",
     // origin: process.env.REACT_PUBLIC_BASE_URL,
     credentials: true,
 }))
