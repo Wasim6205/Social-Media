@@ -16,7 +16,7 @@ const LoopCard = ({loop}) => {
     const {socket} = useSelector(state=>state.socket)
     const [showHeart,setShowHeart] = useState(false)
     const dispatch = useDispatch()
-    const videoRef = useRef()
+    const videoRef = useRef(null)
     const [isPlaying,setIsPlaying] = useState(true)
     const [isMute, setIsMute] = useState(false)
     const [progress,setProgress] = useState(0)
@@ -30,15 +30,38 @@ const LoopCard = ({loop}) => {
         {!loop.likes.includes(userData._id) && handleLike()}
     }
 
-    const handleClick = () => {
-        if(isPlaying){
-            videoRef.current.pause()
-            setIsPlaying(false)
-        }else{
-            videoRef.current.play()
-            setIsPlaying(true)
-        }
+    // Auto-play on mount
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video && isMute) {
+      video.play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch((err) => {
+          console.warn("Autoplay blocked or failed:", err);
+        });
     }
+  }, [isMute]);
+
+
+    const handleClick = async () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    try {
+      if (isPlaying) {
+        video.pause();
+        setIsPlaying(false);
+      } else {
+        await video.play(); // Use await here
+        setIsPlaying(true);
+      }
+    } catch (err) {
+      console.error("Error playing video on click:", err);
+    }
+  };
+
 
     const handleLike = async () => {
     try {
@@ -160,7 +183,18 @@ const LoopCard = ({loop}) => {
             </div>
         </div>
         
-        <video ref={videoRef} src={loop?.media} loop autoPlay muted={isMute} className='w-full max-h-full' onClick={handleClick} onTimeUpdate={handleTimeUpdate} onDoubleClick={handleLikeOnDoubleClick} />
+        {/* <video ref={videoRef} src={loop?.media} loop autoPlay muted={isMute} className='w-full max-h-full' onClick={handleClick} onTimeUpdate={handleTimeUpdate} onDoubleClick={handleLikeOnDoubleClick} /> */}
+        <video
+      ref={videoRef}
+      src={loop?.media}
+      loop
+      autoPlay
+      muted={isMute}
+      className="w-full max-h-full"
+      onClick={handleClick}
+      onTimeUpdate={handleTimeUpdate}
+      onDoubleClick={handleLikeOnDoubleClick}
+    />
         <div className='absolute top-[20px] z-[100] right-[20px]' onClick={()=>setIsMute(prev=>!prev)}>
             {!isMute ? <FiVolume2 className='w-[20px] h-[20px] text-white' /> : <FiVolumeX className='w-[20px] h-[20px] text-white' />}
         </div>
