@@ -9,8 +9,10 @@ import { serverUrl } from '../App'
 import axios from 'axios'
 import { setLoopData } from '../redux/loopSlice'
 import { IoSend } from 'react-icons/io5'
+import { useNavigate } from 'react-router-dom'
 
 const LoopCard = ({loop}) => {
+    const navigate = useNavigate()
     const {userData} = useSelector(state=>state.user)
     const {loopData} = useSelector(state=>state.loop)
     const {socket} = useSelector(state=>state.socket)
@@ -164,7 +166,7 @@ const LoopCard = ({loop}) => {
                 {loop.comments?.map((com,index)=>(
                     <div key={index} className='w-full flex flex-col gap-[5px] border-b-[1px] border-gray-800 justify-center pb-[10px] mt-[10px]'>
                         <div className='flex justify-start items-center md:gap-[20px] gap-[10px]'>
-                            <div className='w-[30px] h-[30px] md:w-[40px] md:h-[40px] border-2 border-black rounded-full cursor-pointer overflow-hidden'>
+                            <div className='w-[30px] h-[30px] md:w-[40px] md:h-[40px] border-2 border-black rounded-full cursor-pointer overflow-hidden' onClick={()=>navigate(`/profile/${com?.author?.userName}`)}>
                                 <img src={com.author?.profileImage || dp} alt="" className='w-full object-cover' />
                             </div>
                             <div className='w-[150px] font-semibold truncate text-white'>{com.author?.userName}</div>
@@ -204,7 +206,7 @@ const LoopCard = ({loop}) => {
 
         <div className='w-full absolute h-[100px] bottom-[10px] p-[10px] flex flex-col gap-[10px]'>
             <div className='flex items-center gap-[10px]'>
-                <div className='w-[30px] h-[30px] md:w-[40px] md:h-[40px] border-2 border-black rounded-full cursor-pointer overflow-hidden'>
+                <div className='w-[30px] h-[30px] md:w-[40px] md:h-[40px] border-2 border-black rounded-full cursor-pointer overflow-hidden' onClick={()=>navigate(`/profile/${loop?.author?.userName}`)}>
                     <img src={loop.author?.profileImage || dp} alt="" className='w-full object-cover' />
                 </div>
                 <div className='w-[120px] font-semibold truncate text-white'>{loop.author.userName}</div>

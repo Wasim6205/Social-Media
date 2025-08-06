@@ -42,7 +42,7 @@ const MessageArea = () => {
             dispatch(setMessages([...messages,result.data]))
             setInput("")
             setFrontendImage(null)
-            setFrontendImage(null)
+            setBackendImage(null)
             setLoading(false)
         } catch (error) {
             setLoading(false)
