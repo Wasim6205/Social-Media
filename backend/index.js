@@ -17,7 +17,8 @@ const port = process.env.PORT || 5000
 
 app.use(cors({
     // origin: "http://localhost:5173",
-    origin: process.env.REACT_PUBLIC_BASE_URL,
+    origin:"https://instawave.onrender.com",
+    // origin: process.env.REACT_PUBLIC_BASE_URL,
     credentials: true,
 }))
 app.use(express.json())
@@ -30,6 +31,9 @@ app.use('/api/loop', loopRouter)
 app.use('/api/story', storyRouter)
 app.use('/api/message', messageRouter)
 
+app.get("/",(req,res)=>{
+    res.send("Hello World")
+})
 server.listen(port, ()=>{
     connectDb()
     console.log(`server started on port ${port}`)
